@@ -30,6 +30,10 @@
 #include "DiscordCoordinator.h"
 #endif
 
+#ifdef ENABLE_SCRIPTING
+#include <mgba/feature/rpcserver.h>
+#endif
+
 using namespace QGBA;
 
 static GBAApp* g_app = nullptr;
@@ -299,6 +303,9 @@ GBAApp::WorkerJob::WorkerJob(qint64 id, std::function<void ()> job, GBAApp* owne
 void GBAApp::WorkerJob::run() {
 	m_job();
 	QMetaObject::invokeMethod(m_owner, "finishJob", Q_ARG(qint64, m_id));
+#ifdef ENABLE_SCRIPTING
+	stopRPC();
+#endif
 }
 
 #ifdef USE_SQLITE3

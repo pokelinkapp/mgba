@@ -76,6 +76,10 @@
 #include <mgba/feature/commandline.h>
 #include <mgba-util/vfs.h>
 
+#ifdef ENABLE_SCRIPTING
+#include <mgba/feature/rpcserver.h>
+#endif
+
 using namespace QGBA;
 
 Window::Window(CoreManager* manager, ConfigController* config, int playerId, QWidget* parent)
@@ -164,6 +168,10 @@ Window::~Window() {
 
 #ifdef USE_SQLITE3
 	delete m_libraryView;
+#endif
+
+#ifdef ENABLE_SCRIPTING
+	stopRPC();
 #endif
 }
 

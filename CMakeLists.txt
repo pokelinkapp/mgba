@@ -774,6 +774,17 @@ endif()
 if(ENABLE_SCRIPTING)
 	list(APPEND ENABLES SCRIPTING)
 
+    list(APPEND FEATURES RPC)
+    add_subdirectory(src/third-party/X-RPC)
+
+    include_directories(
+            src/third-party/X-RPC/dependencies/msgpack-c/include
+            src/third-party/X-RPC/include
+    )
+
+    list(APPEND THIRD_PARTY_SRC src/feature/rpc/rpcserver.cpp)
+    list(APPEND DEPENDENCY_LIB X-RPC)
+
 	if(BUILD_PYTHON)
 		find_package(PythonLibs ${USE_PYTHON_VERSION})
 		list(APPEND DEPENDENCY_LIB ${PYTHON_LIBRARIES})

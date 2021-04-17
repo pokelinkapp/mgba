@@ -25,6 +25,10 @@
 #include <mgba-util/patch.h>
 #include <mgba-util/vfs.h>
 
+#ifdef ENABLE_SCRIPTING
+#include <mgba/feature/rpcserver.h>
+#endif
+
 static const struct mCoreChannelInfo _GBVideoLayers[] = {
 	{ GB_LAYER_BACKGROUND, "bg", "Background", NULL },
 	{ GB_LAYER_WINDOW, "bgwin", "Window", NULL },
@@ -122,11 +126,18 @@ static bool _GBCoreInit(struct mCore* core) {
 #if !defined(MINIMAL_CORE) || MINIMAL_CORE < 2
 	mDirectorySetInit(&core->dirs);
 #endif
+
+#ifdef ENABLE_SCRIPTING
+	setCore(core);
+#endif
 	
 	return true;
 }
 
 static void _GBCoreDeinit(struct mCore* core) {
+#ifdef ENABLE_SCRIPTING
+	setCore(0);
+#endif
 	SM83Deinit(core->cpu);
 	GBDestroy(core->board);
 	mappedMemoryFree(core->cpu, sizeof(struct SM83Core));

@@ -23,6 +23,10 @@
 #include <mgba/core/version.h>
 #include <mgba/internal/gba/gba.h>
 
+#ifdef ENABLE_SCRIPTING
+#include <mgba/feature/rpcserver.h>
+#endif
+
 using namespace QGBA;
 
 SettingsView::SettingsView(ConfigController* controller, InputController* inputController, ShortcutController* shortcutController, LogController* logController, QWidget* parent)
@@ -429,6 +433,7 @@ void SettingsView::updateConfig() {
 	saveSetting("dynamicTitle", m_ui.dynamicTitle);
 	saveSetting("videoScale", m_ui.videoScale);
 	saveSetting("gba.forceGbp", m_ui.forceGbp);
+	saveSetting("rpc.port", m_ui.spnRPCPort);
 
 	if (m_ui.audioBufferSize->currentText().toInt() > 8192) {
 		m_ui.audioBufferSize->setCurrentText("8192");
@@ -524,6 +529,12 @@ void SettingsView::updateConfig() {
 	m_logModel.logger()->setLogFile(m_ui.logFile->text());
 	m_logModel.logger()->logToFile(m_ui.logToFile->isChecked());
 	m_logModel.logger()->logToStdout(m_ui.logToStdout->isChecked());
+
+	if (m_ui.chkRPCEnable->isChecked()) {
+		startRPC("127.0.0.1", m_ui.spnRPCPort->value());
+	} else {
+		stopRPC();
+	}
 
 #ifdef M_CORE_GB
 	QVariant modelGB = m_ui.gbModel->currentData();
@@ -714,6 +725,14 @@ void SettingsView::reloadConfig() {
 		m_ui.videoScaleSize->setText(tr("(%1×%2)").arg(GBA_VIDEO_HORIZONTAL_PIXELS * value).arg(GBA_VIDEO_VERTICAL_PIXELS * value));
 	});
 	loadSetting("videoScale", m_ui.videoScale, 1);
+
+	auto rpcPort = loadSetting("rpc.port").toInt();
+
+	if (rpcPort == 0) {
+		rpcPort = 23457;
+	}
+
+	m_ui.spnRPCPort->setValue(rpcPort);
 }
 
 void SettingsView::addPage(const QString& name, QWidget* view, Page index) {
