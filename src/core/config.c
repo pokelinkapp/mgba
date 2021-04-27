@@ -10,6 +10,7 @@
 #include <mgba-util/string.h>
 #include <mgba-util/vfs.h>
 
+#include <mgba/feature/rpcserver.h>
 #include <sys/stat.h>
 
 #ifdef _WIN32
@@ -413,6 +414,18 @@ void mCoreConfigMap(const struct mCoreConfig* config, struct mCoreOptions* opts)
 	}
 	if (_lookupIntValue(config, "rewindEnable", &fakeBool)) {
 		opts->rewindEnable = fakeBool;
+	}
+
+	_lookupUIntValue(config, "rpc.port", (unsigned int*) &opts->rpcPort);
+
+	if (_lookupIntValue(config, "rpc.enabled", &fakeBool)) {
+		opts->rpcEnabled = fakeBool;
+
+		if (opts->rpcEnabled) {
+			startRPC("127.0.0.1", opts->rpcPort);
+		} else {
+			stopRPC();
+		}
 	}
 
 	_lookupIntValue(config, "fullscreen", &opts->fullscreen);

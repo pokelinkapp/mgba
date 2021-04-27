@@ -434,6 +434,7 @@ void SettingsView::updateConfig() {
 	saveSetting("videoScale", m_ui.videoScale);
 	saveSetting("gba.forceGbp", m_ui.forceGbp);
 	saveSetting("rpc.port", m_ui.spnRPCPort);
+	saveSetting("rpc.enabled", m_ui.chkRPCEnable);
 
 	if (m_ui.audioBufferSize->currentText().toInt() > 8192) {
 		m_ui.audioBufferSize->setCurrentText("8192");
@@ -630,6 +631,8 @@ void SettingsView::reloadConfig() {
 	loadSetting("gba.audioHle", m_ui.audioHle);
 	loadSetting("dynamicTitle", m_ui.dynamicTitle, true);
 	loadSetting("gba.forceGbp", m_ui.forceGbp);
+	loadSetting("rpc.port", m_ui.spnRPCPort);
+	loadSetting("rpc.enabled", m_ui.chkRPCEnable);
 
 	m_ui.libraryStyle->setCurrentIndex(loadSetting("libraryStyle").toInt());
 
@@ -733,6 +736,12 @@ void SettingsView::reloadConfig() {
 	}
 
 	m_ui.spnRPCPort->setValue(rpcPort);
+
+	if (m_ui.chkRPCEnable->isChecked()) {
+		startRPC("127.0.0.1", m_ui.spnRPCPort->value());
+	} else {
+		stopRPC();
+	}
 }
 
 void SettingsView::addPage(const QString& name, QWidget* view, Page index) {

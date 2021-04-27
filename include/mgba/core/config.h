@@ -58,6 +58,9 @@ struct mCoreOptions {
 
 	bool videoSync;
 	bool audioSync;
+
+	ushort rpcPort;
+	bool rpcEnabled;
 };
 
 void mCoreConfigInit(struct mCoreConfig*, const char* port);
