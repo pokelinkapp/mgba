@@ -224,9 +224,6 @@ static bool _GBACoreInit(struct mCore* core) {
 }
 
 static void _GBACoreDeinit(struct mCore* core) {
-#ifdef ENABLE_SCRIPTING
-	setCore(0);
-#endif
 	ARMDeinit(core->cpu);
 	GBADestroy(core->board);
 	mappedMemoryFree(core->cpu, sizeof(struct ARMCore));

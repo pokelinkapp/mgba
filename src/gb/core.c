@@ -135,9 +135,6 @@ static bool _GBCoreInit(struct mCore* core) {
 }
 
 static void _GBCoreDeinit(struct mCore* core) {
-#ifdef ENABLE_SCRIPTING
-	setCore(0);
-#endif
 	SM83Deinit(core->cpu);
 	GBDestroy(core->board);
 	mappedMemoryFree(core->cpu, sizeof(struct SM83Core));

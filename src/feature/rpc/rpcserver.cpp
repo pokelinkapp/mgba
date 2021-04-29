@@ -29,8 +29,16 @@ void readMemory(msgpack_object* args, msgpack_packer* packer) {
 	msgpack_pack_array(packer, size);
 
 	for (auto i = address; i < address + size; i++) {
-		msgpack_pack_char(packer, (char)rpc_mCore->busRead8(rpc_mCore, i));
+		msgpack_pack_fix_uint8(packer, (char)rpc_mCore->busRead8(rpc_mCore, i));
 	}
+}
+
+void supportedGens(msgpack_object* _, msgpack_packer* packer) {
+	msgpack_pack_array(packer, 3);
+
+	msgpack_pack_char(packer, 1);
+	msgpack_pack_char(packer, 2);
+	msgpack_pack_char(packer, 3);
 }
 
 void startRPC(char* ip, unsigned short port) {
@@ -39,6 +47,7 @@ void startRPC(char* ip, unsigned short port) {
 	}
 
 	xRPC_Server_RegisterCallBack("readMemory", &readMemory);
+	xRPC_Server_RegisterCallBack("supportedGens", &supportedGens);
 
 	rpcThread = std::thread([ip, port]() {
 		xRPC_Server_Start(port, ip, 10);
