@@ -531,10 +531,11 @@ void SettingsView::updateConfig() {
 	m_logModel.logger()->logToFile(m_ui.logToFile->isChecked());
 	m_logModel.logger()->logToStdout(m_ui.logToStdout->isChecked());
 
-	if (m_ui.chkRPCEnable->isChecked()) {
-		startRPC("127.0.0.1", m_ui.spnRPCPort->value());
+	if (!m_ui.chkRPCEnable->isChecked()) {
+		stopRPC(false);
+		disableRPC();
 	} else {
-		stopRPC();
+		enableRPC("127.0.0.1", m_ui.spnRPCPort->value());
 	}
 
 #ifdef M_CORE_GB
@@ -737,10 +738,11 @@ void SettingsView::reloadConfig() {
 
 	m_ui.spnRPCPort->setValue(rpcPort);
 
-	if (m_ui.chkRPCEnable->isChecked()) {
-		startRPC("127.0.0.1", m_ui.spnRPCPort->value());
+	if (!m_ui.chkRPCEnable->isChecked()) {
+		disableRPC();
+		stopRPC(false);
 	} else {
-		stopRPC();
+		enableRPC("127.0.0.1", m_ui.spnRPCPort->value());
 	}
 }
 

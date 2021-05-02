@@ -778,7 +778,6 @@ if(ENABLE_SCRIPTING)
     add_subdirectory(src/third-party/X-RPC)
 
     include_directories(
-            src/third-party/X-RPC/dependencies/msgpack-c/include
             src/third-party/X-RPC/include
     )
 

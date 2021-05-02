@@ -4,8 +4,9 @@
 #if __cplusplus
 extern "C" {
 #endif
-void startRPC(char* ip, unsigned short port);
-void stopRPC();
+void stopRPC(bool wait);
+void enableRPC(char* ip, unsigned short port);
+void disableRPC();
 void setCore(struct mCore* core);
 #if __cplusplus
 };

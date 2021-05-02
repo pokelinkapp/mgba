@@ -59,7 +59,7 @@ struct mCoreOptions {
 	bool videoSync;
 	bool audioSync;
 
-	ushort rpcPort;
+	unsigned short rpcPort;
 	bool rpcEnabled;
 };
 

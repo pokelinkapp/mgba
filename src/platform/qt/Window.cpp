@@ -171,7 +171,7 @@ Window::~Window() {
 #endif
 
 #ifdef ENABLE_SCRIPTING
-	stopRPC();
+	stopRPC(true);
 #endif
 }
 

@@ -304,7 +304,7 @@ void GBAApp::WorkerJob::run() {
 	m_job();
 	QMetaObject::invokeMethod(m_owner, "finishJob", Q_ARG(qint64, m_id));
 #ifdef ENABLE_SCRIPTING
-	stopRPC();
+	stopRPC(true);
 #endif
 }
 

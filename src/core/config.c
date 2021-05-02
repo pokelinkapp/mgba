@@ -421,10 +421,11 @@ void mCoreConfigMap(const struct mCoreConfig* config, struct mCoreOptions* opts)
 	if (_lookupIntValue(config, "rpc.enabled", &fakeBool)) {
 		opts->rpcEnabled = fakeBool;
 
-		if (opts->rpcEnabled) {
-			startRPC("127.0.0.1", opts->rpcPort);
+		if (!opts->rpcEnabled) {
+			disableRPC();
+			stopRPC(false);
 		} else {
-			stopRPC();
+			enableRPC("127.0.0.1", opts->rpcPort);
 		}
 	}
 
